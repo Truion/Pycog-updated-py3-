@@ -70,8 +70,8 @@ class Connectivity(object):
 
             C = np.zeros((N, N), dtype=int)
             k = 0
-            for i in xrange(N):
-                for j in xrange(N):
+            for i in range(N):
+                for j in range(N):
                     if i == j: continue
 
                     C[i,j] = x[k]
