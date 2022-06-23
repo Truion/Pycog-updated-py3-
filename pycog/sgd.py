@@ -27,7 +27,7 @@ from .utils import dump
 
 THIS = 'pycog.sgd'
 
-class SGD(object):
+class SGD:
     """
     Stochastic gradient descent training for RNNs.
 

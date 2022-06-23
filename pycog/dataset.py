@@ -2,10 +2,9 @@ from __future__ import division
 
 import numpy as np
 
-class Dataset(object):
+class Dataset:
     """
     Dataset for training.
-
     """
     @staticmethod
     def rectify(x):

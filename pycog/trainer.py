@@ -24,7 +24,7 @@ from .utils        import print_settings
 
 THIS = 'pycog.trainer'
 
-class Trainer(object):
+class Trainer:
     """
     Train an RNN.
 

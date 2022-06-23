@@ -4,7 +4,7 @@ Wrapper class for training RNNs.
 """
 from __future__ import absolute_import
 
-import imp
+import importlib
 import inspect
 import os
 import sys
@@ -15,7 +15,7 @@ from .defaults import defaults, generate_trial
 
 THIS = 'pycog.model'
 
-class Struct():
+class Struct:
     """
     Treat a dictionary like a module.
 
@@ -23,7 +23,7 @@ class Struct():
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
-class Model(object):
+class Model:
     """
     Provide a simpler interface to users, and check for obvious mistakes.
 
@@ -52,9 +52,14 @@ class Model(object):
                            params : dict
 
         """
+        # print("Your kwargs: ",kwargs)
+        # print("Your modelfile: ",modelfile)
         if modelfile is not None:
             try:
-                self.m = imp.load_source('model', modelfile)
+                spec2 = importlib.util.spec_from_file_location('model',modelfile)
+                self.m = importlib.util.module_from_spec(spec2)
+                spec2.loader.exec_module(self.m)
+                # self.m = imp.load_source('model', modelfile)
             except IOError:
                 print("[ {}.Model ] Couldn't load model file {}".format(THIS, modelfile))
                 sys.exit(1)
@@ -140,7 +145,7 @@ class Model(object):
         for k in defaults:
             if hasattr(self.m, k):
                 params[k] = getattr(self.m, k);
-
+        # print("Your params: ",params)
         # Train
         trainer = Trainer(params)
         trainer.train(savefile, task, recover=recover)

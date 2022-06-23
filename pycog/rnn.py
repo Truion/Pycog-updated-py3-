@@ -58,7 +58,7 @@ activation_functions = {
 
 #=========================================================================================
 
-class RNN(object):
+class RNN:
     """
     Recurrent neural network.
 

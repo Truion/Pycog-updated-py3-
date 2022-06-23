@@ -9,7 +9,7 @@ except ImportError:
 
 THIS = "pycog.connectivity"
 
-class Connectivity(object):
+class Connectivity:
     """
     Constrain the connectivity.
 

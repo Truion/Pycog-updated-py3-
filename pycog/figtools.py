@@ -122,7 +122,7 @@ colors = {
 # Subplot
 #=========================================================================================
 
-class Subplot(object):
+class Subplot:
     """
     Interface to Axes.
 
@@ -376,7 +376,7 @@ class Subplot(object):
         """
         defaults = {
             'color':    Figure.colors('blue'),
-            'normed':   True,
+            'density':   True,
             'rwidth':   1,
             'histtype': 'stepfilled'
             }
@@ -406,7 +406,7 @@ class Subplot(object):
 # Subplot (3D)
 #=========================================================================================
 
-class Subplot3D(object):
+class Subplot3D:
     def __getattr__(self, name):
         if hasattr(self.ax, name):
             return getattr(self.ax, name)
@@ -467,7 +467,7 @@ class Subplot3D(object):
 # Figure
 #=========================================================================================
 
-class Figure(object):
+class Figure:
     defaults = {
         'w':             6.5,
         'h':             5.5,
