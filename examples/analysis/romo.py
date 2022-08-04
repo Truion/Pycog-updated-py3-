@@ -4,7 +4,7 @@ Analyze the Romo task.
 """
 from __future__ import division
 
-import cPickle as pickle
+import pickle
 import os
 import sys
 from   os.path import join
@@ -92,7 +92,7 @@ def run_trials(p, args):
     trials = []
     backspaces = 0
     try:
-        for i in xrange(ntrials):
+        for i in range(ntrials):
             # Condition
             b      = i % m.nconditions
             k0, k1 = tasktools.unravel_index(b, (len(m.fpairs), len(m.gt_lts)))
@@ -292,7 +292,7 @@ def get_active_units(sorted_trials):
     """
     N = next(sorted_trials.itervalues()).shape[0]
     units = []
-    for i in xrange(N):
+    for i in range(N):
         active = False
         for r in sorted_trials.values():
             if is_active(r[i]):
@@ -327,8 +327,8 @@ def tuning(sortedfile):
     # Regress
     a1s   = np.zeros((len(units), len(t)))
     pvals = np.zeros_like(a1s)
-    for i in xrange(len(units)):
-        for j in xrange(len(t)):
+    for i in range(len(units)):
+        for j in range(len(t)):
             slope, intercept, rval, pval, stderr = stats.linregress(f1s, data[i,j])
             a1s[i,j]   = slope
             pvals[i,j] = pval
@@ -408,7 +408,7 @@ def tuning_corr(trialsfile, sortedfile, plot_sig, plot_corr=None,
         plot = plot_stim
         plot.equal()
 
-        for i in xrange(len(units)):
+        for i in range(len(units)):
             plot.plot(a1s[i,idx_stim], a1s[i,idx_delay_end], 'o', **prop)
 
     # Plot a1, end of delay vs. middle of delay
@@ -416,7 +416,7 @@ def tuning_corr(trialsfile, sortedfile, plot_sig, plot_corr=None,
         plot = plot_delay
         plot.equal()
 
-        for i in xrange(len(units)):
+        for i in range(len(units)):
             plot.plot(a1s[i,idx_delay], a1s[i,idx_delay_end], 'o', **prop)
 
 #=========================================================================================
@@ -490,7 +490,7 @@ def do(action, args, p):
         norm = mpl.colors.Normalize(vmin=p['model'].fmin, vmax=p['model'].fmax)
         smap = mpl.cm.ScalarMappable(norm, cmap)
 
-        for i in xrange(p['model'].N):
+        for i in range(p['model'].N):
             # Check if the unit does anything
             active = False
             for condition_averaged in sorted_trials.values():

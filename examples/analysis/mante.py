@@ -1,6 +1,6 @@
 from __future__ import division
 
-import cPickle as pickle
+import pickle
 import os
 import sys
 from   os.path import join
@@ -70,7 +70,7 @@ def run_trials(p, args):
     trials = []
     backspaces = 0
     try:
-        for i in xrange(ntrials):
+        for i in range(ntrials):
             # Condition
             k = tasktools.unravel_index(i % m.nconditions,
                                         (len(m.cohs), len(m.left_rights),
@@ -403,7 +403,7 @@ def get_active_units(trialsfile):
         r += trial['r']
     r /= ntrials
 
-    return sorted([i for i in xrange(N) if is_active(r[i])])
+    return sorted([i for i in range(N) if is_active(r[i])])
 
 def plot_unit(unit, sortedfile, plots, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs):
     # Load sorted trials
@@ -659,9 +659,9 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
 
     # Regression coefficients
     beta = np.zeros((nunits, ntime, nreg))
-    for i in xrange(nunits):
+    for i in range(nunits):
         A = np.linalg.inv(F[i].dot(F[i].T)).dot(F[i])
-        for k in xrange(ntime):
+        for k in range(ntime):
             beta[i,k] = A.dot(r[i,k])
             if np.any(np.isnan(beta[i,k])):
                 raise RuntimeError("[ {}.regress ] Regression failed.".format(THIS))
@@ -706,7 +706,7 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
 
     # Time-independent regression vectors
     beta_max = np.zeros((nreg, nunits))
-    for v in xrange(nreg):
+    for v in range(nreg):
         imax        = np.argmax(np.linalg.norm(beta[v], axis=1))
         beta_max[v] = beta[v,imax]
 

@@ -2,9 +2,9 @@
 
 ## Requirements
 
-This code is written in Python 2.7 and requires
+This code was written in Python 2.7 originally but in this repo has been modified to python 3.8 and requires
 
-* [Theano 0.7](http://deeplearning.net/software/theano/)
+* [Theano 1.0.5]
 
 Optional but recommended if you plan to run many trials with the trained networks outside of Theano:
 
@@ -29,6 +29,9 @@ You can also perform a "standard" installation by going to the `pycog` directory
 ```
 python setup.py install
 ```
+## NOTE 
+A Documentation and code steps followed throughout from start to end of training of S1_code.py, has been provided and can be used to write similar code for the same, in Different language for ML or software like MatLab etc.
+- Written by Mohit Mathuria
 
 ## Examples
 
@@ -45,6 +48,9 @@ For this particular example we've also directly included code for training and p
 ```
 python models/sinewave.py
 ```
+There are other do.py functions available like run, check, clean, submit, restingstate, structure and costs
+From which restingstate, structure and costs are used to generate respective graphs showing restingstate, structure and costs throughout training
+
 
 ## Notes
 
@@ -64,8 +70,15 @@ python models/sinewave.py
   RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility
   rval = __import__(module_name, {}, {}, [module_name])
   ```
+  or
 
-  This is almost always innocuous and can be safely ignored.
+  ```
+  WARNING (theano.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+  ERROR (theano.gpuarray): pygpu was configured but could not be imported or is too old (version 0.7 or higher required)
+  ```
+
+  This is almost always innocuous and can be safely ignored. 
+  Except for the fact that it is unable to use GPU if this shows up. But it will still work around with CPU
 
 ## Acknowledgments
 
@@ -74,6 +87,7 @@ This code would not be possible without
 * On the difficulty of training recurrent neural networks.                                         
   R. Pascanu, T. Mikolov, & Y. Bengio, ICML 2013.                                                  
   https://github.com/pascanur/trainingRNNs
+
 
 ## License
 
@@ -84,3 +98,9 @@ MIT
 This code is the product of work carried out in the group of [Xiao-Jing Wang at New York University](http://www.cns.nyu.edu/wanglab/). If you find our code helpful to your work, consider giving us a shout-out in your publications:
 
 * Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." *PLoS Comp. Bio.* 12, e1004792 (2016). (\* = equal contribution)
+
+It was modified to python 3.8 by:
+Mohit Mathuria
+Junior Undergraduate Student, IIT Jodhpur 2022
+As part of summer project under prof. Shilpa Dang, Assistant Professor
+School of Artificial Intelligence and Data Science (AIDE)

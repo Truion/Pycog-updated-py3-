@@ -4,7 +4,7 @@ Analyze variants of the Lee sequence generation task.
 """
 from __future__ import division
 
-import cPickle as pickle
+import pickle
 import os
 import sys
 
@@ -56,7 +56,7 @@ def run_trials(p, args):
     trials = []
     backspaces = 0
     try:
-        for i in xrange(ntrials):
+        for i in range(ntrials):
             b = i % m.nseq
             if b == 0:
                 if not trials:
@@ -138,7 +138,7 @@ def pca_analysis(trials, min_std=0.1):
 
     # Use only "active" units for PCA
     active_units = []
-    for i in xrange(X.shape[1]):
+    for i in range(X.shape[1]):
         if np.std(X[:,i]) > min_std:
             active_units.append(i)
     X = X[:,active_units]
