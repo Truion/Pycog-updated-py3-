@@ -8,7 +8,6 @@ A more convenient interface to matplotlib.
   matplotlib to the latest version and this problem will go away.
 
 """
-from __future__ import absolute_import
 from __future__ import division
 
 import os

@@ -8,7 +8,6 @@ with the modifications described in
   https://github.com/pascanur/trainingRNNs
 
 """
-from __future__ import absolute_import
 from __future__ import division
 
 import pickle
@@ -109,6 +108,8 @@ class SGD:
         init_x = scan_node.inputs[npos]
         g_x,   = theanotools.grad(costs[0], [init_x])
 
+
+
         # Get into "standard" order, by filling `self.trainables` with
         # `None`s if some of the parameters are not trained.
         Win, Wrec, Wout, brec, bout, x0 = RNN.fill(self.trainables, self.trainable_names)
@@ -143,12 +144,11 @@ class SGD:
         # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
         num = (1 - alpha)*d_xt[1:] + T.dot(alpha*d_xt[1:], self.Wrec_)*d_f_hidden(xt)
         num = (num**2).sum(axis=2)
-
         # Denominator of Omega, small denominators are not considered
         # \partial E/\partial x_{t+1}, squared and summed over hidden units
         denom = (d_xt[1:]**2).sum(axis=2)
         Omega = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
-
+        
         # First averaged across batches (.mean(axis=1)),
         # then averaged across all time steps where |\p E/\p x_t|^2 > bound
         nelems = T.mean(T.ge(denom, bound), axis=1)
@@ -270,7 +270,6 @@ class SGD:
         checkfreq = self.p['checkfreq']
         if checkfreq is None:
             checkfreq = int(1e4)//gradient_data.minibatch_size
-
         patience = self.p['patience']
         if patience is None:
             patience = 100*checkfreq
@@ -287,7 +286,7 @@ class SGD:
         #---------------------------------------------------------------------------------
 
         if os.path.isfile(savefile):
-            with open(savefile) as f:
+            with open(savefile,'rb') as f:
                 save = pickle.load(f)
             best          = save['best']
             init_p        = save['current']
@@ -369,7 +368,7 @@ class SGD:
                     costs = [float(i) for i in costs[:-1]]
                     s0    = "| validation loss / RMSE"
                     s1    = ": {:.6f} / {:.6f}".format(costs[0], costs[1])
-
+                   
                     # Dashes
                     nfill = 70
 
@@ -412,7 +411,7 @@ class SGD:
 
                     # Spectral radius
                     rho = RNN.spectral_radius(self.Wrec_.eval())
-
+                    
                     # Format
                     Omega = ('n/a' if tr_Omega is None
                              else '{:.8f}'.format(float(tr_Omega)))
@@ -449,6 +448,7 @@ class SGD:
                         break
 
                     # This termination criterion assumes that performance is not None
+                    
                     if terminate(np.array([c[-1] for _, c in costs_history])):
                         print("Termination criterion satisfied -- we\'ll call it a day.")
                         break

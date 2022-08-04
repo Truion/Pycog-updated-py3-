@@ -82,7 +82,7 @@ class Dataset:
             'name':             self.name
             }
         trial = self.task.generate_trial(self.rng, self.dt, params)
-
+        
         return ('mask' in trial)
 
     #/////////////////////////////////////////////////////////////////////////////////////
@@ -154,11 +154,9 @@ class Dataset:
                     'name':             self.name
                     }
                 self.trials.append(self.task.generate_trial(self.rng, self.dt, params))
-
             # Longest trial
             k = np.argmax([len(trial['t']) for trial in self.trials])
             t = self.trials[k]['t']
-
             # Input and output matrices
             Nin, N, Nout = self.network_shape
             T = len(t)

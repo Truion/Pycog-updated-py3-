@@ -8,7 +8,7 @@ itself depending on your setup.
 
 """
 import argparse
-import imp
+import importlib
 import os
 import shutil
 import subprocess
@@ -17,10 +17,14 @@ import time
 from   os.path import join
 
 from pycog.utils import get_here, mkdir_p
+# Modules Imports above
 
 #=========================================================================================
 # Command line
 #=========================================================================================
+
+#Creation of command line arguments here for command 'python do.py'
+
 
 p = argparse.ArgumentParser()
 p.add_argument('model_file', help="model specification")
@@ -32,13 +36,16 @@ p.add_argument('-p', '--ppn', type=int, default=1)
 p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 p.add_argument('--dt', type=float, default=0.5)
 p.add_argument('--dt_save', type=float, default=0.5)
+"""a variable here parses arguments recieved from commandline"""
 a = p.parse_args()
 
 # Model file
+
+# below gets absolute model file path using os module
 modelfile = os.path.abspath(a.model_file)
 if not modelfile.endswith('.py'):
     modelfile += '.py'
-
+# assigns variable names to recieved arguments
 action  = a.action
 args    = a.args
 seed    = a.seed
@@ -47,7 +54,7 @@ ppn     = a.ppn
 gpus    = a.gpus
 dt      = a.dt
 dt_save = a.dt_save
-
+# Showing user the status of recieved argument
 print("MODELFILE: " + str(modelfile))
 print("ACTION:    " + str(action))
 print("ARGS:      " + str(args))
@@ -56,6 +63,7 @@ print("SEED:      " + str(seed))
 #=========================================================================================
 # Setup paths
 #=========================================================================================
+# Below here defines paths for various folders and files to be used
 
 # Location of script
 here   = get_here(__file__)
@@ -201,7 +209,7 @@ elif action == 'restingstate':
     plot = fig.add()
 
     colors = [Figure.colors('blue'), Figure.colors('orange')]
-    for i in xrange(rnn.z.shape[0]):
+    for i in range(rnn.z.shape[0]):
         plot.plot(1e-3*rnn.t, rnn.z[i], color=colors[i%len(colors)])
         mean = np.mean(rnn.z[i])*np.ones_like(rnn.t)
         plot.plot(1e-3*rnn.t, mean, color=colors[i%len(colors)])
@@ -277,14 +285,21 @@ elif action == 'run':
 
     # Load analysis module
     try:
-        r = imp.load_source('analysis', runfile)
+        spec2 = importlib.util.spec_from_file_location('analysis', runfile)
+        r = importlib.util.module_from_spec(spec2)
+        spec2.loader.exec_module(r)
+        # r = imp.load_source('analysis', runfile)
     except IOError:
         print("Couldn't load analysis module from {}".format(runfile))
         sys.exit()
 
     # Load model
     try:
-        m = imp.load_source('model', modelfile)
+        
+        spec1 = importlib.util.spec_from_file_location('model', modelfile)
+        m = importlib.util.module_from_spec(spec1)
+        spec1.loader.exec_module(m)
+        # m = imp.load_source('model', modelfile)
     except IOError:
         print("Couldn't load model module from {}".format(modelfile))
         sys.exit()

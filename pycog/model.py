@@ -2,8 +2,6 @@
 Wrapper class for training RNNs.
 
 """
-from __future__ import absolute_import
-
 import importlib
 import inspect
 import os
@@ -15,19 +13,24 @@ from .defaults import defaults, generate_trial
 
 THIS = 'pycog.model'
 
+
 class Struct:
     """
     Treat a dictionary like a module.
 
     """
+
     def __init__(self, **entries):
         self.__dict__.update(entries)
+
+
 
 class Model:
     """
     Provide a simpler interface to users, and check for obvious mistakes.
 
     """
+
     def __init__(self, modelfile=None, **kwargs):
         """
         If `modelfile` is provided infer everything from the file, otherwise the
@@ -52,36 +55,34 @@ class Model:
                            params : dict
 
         """
-        # print("Your kwargs: ",kwargs)
-        # print("Your modelfile: ",modelfile)
+
         if modelfile is not None:
             try:
-                spec2 = importlib.util.spec_from_file_location('model',modelfile)
+                spec2 = importlib.util.spec_from_file_location(
+                    'model', modelfile)
                 self.m = importlib.util.module_from_spec(spec2)
                 spec2.loader.exec_module(self.m)
                 # self.m = imp.load_source('model', modelfile)
             except IOError:
-                print("[ {}.Model ] Couldn't load model file {}".format(THIS, modelfile))
+                print("[ {}.Model ] Couldn't load model file {}".format(
+                    THIS, modelfile))
                 sys.exit(1)
         else:
             self.m = Struct(**kwargs)
 
-        #---------------------------------------------------------------------------------
+        # ---------------------------------------------------------------------------------
         # Perform model check
-        #---------------------------------------------------------------------------------
+        # ---------------------------------------------------------------------------------
 
         # generate_trial : existence
         try:
-            f    = self.m.generate_trial
-            args = inspect.getargspec(f).args
+            f = self.m.generate_trial
+            args = inspect.getfullargspec(f).args
+
         except AttributeError:
-            try:
-                f    = self.m.task.generate_trial
-                args = inspect.getargspec(f).args[1:]
-            except AttributeError:
-                print("[ {}.Model ] You need to define a function that returns trials."
-                      .format(THIS))
-                sys.exit(1)
+            print("[ {}.Model ] You need to define a function that returns trials."
+                  .format(THIS))
+            sys.exit(1)
 
         # generate_trial : usage
         if args != ['rng', 'dt', 'params']:
@@ -91,9 +92,10 @@ class Model:
 
         # var_in : size
         if (hasattr(self.m, 'var_in') and isinstance(self.m.var_in, np.ndarray)
-            and self.m.var_in.ndim == 1):
+                and self.m.var_in.ndim == 1):
             if len(self.m.var_in) != self.m.Nin:
-                print("[ {}.Model ] The length of var_in doesn't match Nin.".format(THIS))
+                print(
+                    "[ {}.Model ] The length of var_in doesn't match Nin.".format(THIS))
                 sys.exit(1)
 
         # if terminate is given, performance should also be given
@@ -101,7 +103,7 @@ class Model:
             print(("[ {}.Model ] Warning: Termination criterion is provided, "
                    " but the performance measure is not defined").format(THIS))
 
-    #/////////////////////////////////////////////////////////////////////////////////////
+    # /////////////////////////////////////////////////////////////////////////////////////
 
     def train(self, savefile, seed=None, compiledir=None, recover=True, gpus=0):
         """
@@ -144,8 +146,7 @@ class Model:
         # Optional parameters
         for k in defaults:
             if hasattr(self.m, k):
-                params[k] = getattr(self.m, k);
-        # print("Your params: ",params)
+                params[k] = getattr(self.m, k)
         # Train
         trainer = Trainer(params)
         trainer.train(savefile, task, recover=recover)

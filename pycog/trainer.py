@@ -2,7 +2,6 @@
 Train a recurrent neural network.
 
 """
-from __future__ import absolute_import
 from __future__ import division
 
 import os
@@ -205,7 +204,6 @@ class Trainer:
         # Default parameters
         for k in defaults:
             self.p.setdefault(k, defaults[k])
-
         # Time constants
         if not np.isscalar(self.p['tau']):
             self.p['tau'] = np.asarray(self.p['tau'], dtype=floatX)
@@ -258,7 +256,6 @@ class Trainer:
                     C[i,i]    = 0
                     C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
                 C /= np.linalg.norm(C, axis=1)[:,np.newaxis]
-
                 self.p['Crec'] = C
             else:
                 # Default for no E/I is fully (non-self) connected
@@ -320,13 +317,11 @@ class Trainer:
         else:
             raise NotImplementedError("[ {}.Trainer.init_weights ] distribution: {}"
                                       .format(THIS, distribution))
-
         if C is not None:
             W = np.zeros(m*n)
             W[C.idx_plastic] = w
         else:
             W = w
-
         return W.reshape((m, n))
 
     def train(self, savefile, task, recover=True):
@@ -420,7 +415,6 @@ class Trainer:
         if self.p['ei'] is not None:
             Wrec_0_full = Wrec_0_full*self.p['ei']
         rho = RNN.spectral_radius(Wrec_0_full)
-
         # Scale Wrec to have fixed spectral radius
         if self.p['ei'] is not None:
             R = self.p['rho0']/rho
@@ -606,7 +600,7 @@ class Trainer:
         # u[:,:,Nin:]  contains the recurrent noise
         u   = T.tensor3('u')
         x0_ = T.alloc(x0, u.shape[1], x0.shape[0])
-
+ 
         if Nin > 0:
             def rnn(u_t, x_tm1, r_tm1, WinT, WrecT):
                 x_t = ((1 - alpha)*x_tm1
@@ -623,6 +617,7 @@ class Trainer:
                                     outputs_info=[x0_, f_hidden(x0_)],
                                     sequences=u,
                                     non_sequences=[Win_.T, Wrec_.T])
+                        
         else:
             def rnn(u_t, x_tm1, r_tm1, WrecT):
                 x_t = ((1 - alpha)*x_tm1
@@ -638,7 +633,6 @@ class Trainer:
                                     outputs_info=[x0_, f_hidden(x0_)],
                                     sequences=u,
                                     non_sequences=[Wrec_.T])
-
         #---------------------------------------------------------------------------------
         # Running mode
         #---------------------------------------------------------------------------------
@@ -652,6 +646,7 @@ class Trainer:
                 self.p['n_gradient'] = 1
 
             x0_ = x[-1]
+
         else:
             settings['mode'] = 'batch'
 
@@ -811,7 +806,6 @@ class Trainer:
 
         settings['(Theano) floatX']   = self.floatX
         settings['(Theano) allow_gc'] = theano.config.allow_gc
-
         #---------------------------------------------------------------------------------
         # Train!
         #---------------------------------------------------------------------------------
