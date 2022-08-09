@@ -95,11 +95,11 @@ MIT
 
 ## Citation
 
-This code is the product of work carried out in the group of [Xiao-Jing Wang at New York University](http://www.cns.nyu.edu/wanglab/). If you find our code helpful to your work, consider giving us a shout-out in your publications:
+* This code is the product of work carried out in the group of [Xiao-Jing Wang at New York University](http://www.cns.nyu.edu/wanglab/). If you find our code helpful to your work, consider giving us a shout-out in your publications:
 
 * Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." *PLoS Comp. Bio.* 12, e1004792 (2016). (\* = equal contribution)
 
-It was modified to python 3.8 by:
+* It was modified to python 3.8 by:
 Mohit Mathuria
 Junior Undergraduate Student, IIT Jodhpur 2022
 As part of summer project under prof. Shilpa Dang, Assistant Professor
